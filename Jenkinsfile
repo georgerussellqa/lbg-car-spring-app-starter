@@ -6,11 +6,14 @@ pipeline {
     }
   agent any
 
-    tools {
-        docker "Docker"
+  stages{
+    stage('Initialize'){
+        steps{
+            def dockerHome = tool 'Docker'
+            env.PATH = "${dockerHome}/bin:${env.PATH}"
+        }
     }
 
-  stages{
     stage('Checkout'){
         steps {
           // Get some code from a GitHub repository
