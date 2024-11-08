@@ -9,9 +9,13 @@ COPY pom.xml .
 COPY . .
 RUN mvn clean package -DskipTests
 
+FROM openjdk:11-jre-slim
+WORKDIR /app
+COPY --from=build /target/cardatabase-0.0.1-SNAPSHOT.jar app.jar
 
 FROM build
 
 COPY target/cardatabase-0.0.1-SNAPSHOT.jar /app/app.jar
 EXPOSE 81
-CMD ["java","-jar","/app/app.jar"]
+
+ENTRYPOINT ["java","-jar","/app/app.jar"]
