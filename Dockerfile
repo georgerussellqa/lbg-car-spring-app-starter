@@ -2,13 +2,15 @@
 #Spring boot
 #maven
 
-FROM maven:3.8.5-openjdk-11
-WORKDIR /app
+FROM maven:3.8.5-openjdk-11 as build
 COPY pom.xml .
-RUN mvn clean package
-COPY target/lbg-car-spring-app-starter.jar /app/app.jar
+COPY . .
+RUN mvn clean package -DskipTests
 
+FROM openjdk:11-jre-slim
+WORKDIR /app
+COPY --from=build /target/cardatabase-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 81
 
-CMD ["java","-jar","/app/app.jar"]
+ENTRYPOINT ["java","-jar","/app/app.jar"]
