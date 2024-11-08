@@ -13,12 +13,6 @@ pipeline {
           git branch: 'main', url: 'https://github.com/georgerussellqa/lbg-car-spring-app-starter.git'
         }
     }
-    stage('Initialize'){
-        steps{
-            def dockerHome = tool 'myDocker'
-            env.PATH = "${dockerHome}/bin:${env.PATH}"
-        }
-    }
     stage ('Build Docker Image'){
         steps{
             script {
